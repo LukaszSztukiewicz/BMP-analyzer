@@ -16,21 +16,16 @@ int main(int argc, char *argv[]) {
     {
     case 2:
         printf("Decode steganography? [Y/n] ");
-        while (1)
-        {
+        while (1){
             char c = getchar();
             getchar();
-            if (c == 'Y')
-            {
+            if (c == 'Y'){
                 printf("Decoding not implemented yet\n");
                 break;
             }
-            else if (c == 'n')
-            {
+            else if (c == 'n'){
                 break;
-            }
-            else
-            {
+            }else{
                 printf("Invalid input. Try again.\n");
             }
         }
@@ -40,8 +35,8 @@ int main(int argc, char *argv[]) {
         // TODO: implement grayscale conversion
         break;
     case 4:
-        // code for stenography
-        // TODO: implement stenography encoder
+        // code for steganography
+        // TODO: implement steganography encoder
         break;
     default:
         printf("Invalid number of arguments\n");
