@@ -20,8 +20,10 @@ int main(int argc, char *argv[]) {
   // all members initialized to zeros by providing expilcit curly braces
   int n_pixels                  = info_header.biWidth * info_header.biHeight;
   struct bucket_BGR buckets[16] = {};
+  int buffer_size               = ((info_header.biWidth * info_header.biBitCount + 31) / 32) * 4;
+  printf("buffer_size: %d\n", buffer_size);
 
-  parse_bucket_histogram(file, buckets, n_pixels);
+  parse_bucket_histogram(file, buckets, n_pixels, file_header.bfOffBits, buffer_size);
   print_bucket_histogram(buckets, n_pixels);
 
   switch (argc) {
