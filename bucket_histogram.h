@@ -21,5 +21,5 @@ typedef struct bucket_BGR {
 };
 #pragma pack(pop)
 
-void parse_bucket_histogram(FILE *file, struct bucket_BGR *buckets);
-void print_bucket_histogram(struct bucket_BGR *buckets);
+void parse_bucket_histogram(FILE *file, struct bucket_BGR *buckets, int n_pixles);
+void print_bucket_histogram(struct bucket_BGR buckets[], int n_pixles);
