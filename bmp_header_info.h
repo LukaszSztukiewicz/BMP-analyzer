@@ -1,11 +1,18 @@
+<<<<<<< HEAD
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+=======
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+>>>>>>> main
 
 typedef uint16_t WORD;
 typedef uint32_t DWORD;
 typedef int32_t LONG;
 
+<<<<<<< HEAD
 // pack the structs (memory alignment change) with pragma pack
 #pragma pack(push, 1)
 // https://docs.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-bitmapfileheader
@@ -14,6 +21,16 @@ typedef struct tagBITMAPFILEHEADER {
   DWORD bfSize;
   WORD bfReserved1;
   WORD bfReserved2;
+=======
+//pack the structs (memory alignment change) with pragma pack
+#pragma pack(push, 1)
+// https://docs.microsoft.com/en-us/windows/win32/api/wingdi/ns-wingdi-bitmapfileheader
+typedef struct tagBITMAPFILEHEADER {
+  WORD  bfType;
+  DWORD bfSize;
+  WORD  bfReserved1;
+  WORD  bfReserved2;
+>>>>>>> main
   DWORD bfOffBits;
 } BITMAPFILEHEADER, *LPBITMAPFILEHEADER, *PBITMAPFILEHEADER;
 #pragma pack(pop)
@@ -22,6 +39,7 @@ typedef struct tagBITMAPFILEHEADER {
 // https://docs.microsoft.com/pl-pl/previous-versions/dd183376(v=vs.85)
 typedef struct tagBITMAPINFOHEADER {
   DWORD biSize;
+<<<<<<< HEAD
   LONG biWidth;
   LONG biHeight;
   WORD biPlanes;
@@ -30,6 +48,16 @@ typedef struct tagBITMAPINFOHEADER {
   DWORD biSizeImage;
   LONG biXPelsPerMeter;
   LONG biYPelsPerMeter;
+=======
+  LONG  biWidth;
+  LONG  biHeight;
+  WORD  biPlanes;
+  WORD  biBitCount;
+  DWORD biCompression;
+  DWORD biSizeImage;
+  LONG  biXPelsPerMeter;
+  LONG  biYPelsPerMeter;
+>>>>>>> main
   DWORD biClrUsed;
   DWORD biClrImportant;
 } BITMAPINFOHEADER, *LPBITMAPINFOHEADER, *PBITMAPINFOHEADER;
