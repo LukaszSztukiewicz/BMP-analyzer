@@ -4,6 +4,7 @@ void parse_headers(FILE *file, BITMAPFILEHEADER *file_header, BITMAPINFOHEADER *
   fread(file_header, sizeof(BITMAPFILEHEADER), 1, file);
   fread(info_header, sizeof(BITMAPINFOHEADER), 1, file);
 }
+
 void print_headers(BITMAPFILEHEADER *file_header, BITMAPINFOHEADER *info_header) {
   printf("BITMAPFILEHEADER:\n");
   switch (file_header->bfType) {

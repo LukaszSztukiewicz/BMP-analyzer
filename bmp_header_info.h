@@ -1,3 +1,6 @@
+#ifndef BMP_HEADER_INFO_H
+#define BMP_HEADER_INFO_H
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,3 +41,5 @@ typedef struct tagBITMAPINFOHEADER {
 void parse_headers(FILE *file, BITMAPFILEHEADER *file_header, BITMAPINFOHEADER *info_header);
 
 void print_headers(BITMAPFILEHEADER *file_header, BITMAPINFOHEADER *info_header);
+
+#endif
