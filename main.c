@@ -1,4 +1,5 @@
 #include "bmp_header_info.h"
+#include "bucket_histogram.h"
 #include "steganography.h"
 
 
@@ -6,12 +7,26 @@ int main(int argc, char *argv[]) {
     FILE *file = fopen(argv[1], "rb");
     FILE *outfile = fopen(argv[2], "wb");
 
-    BITMAPFILEHEADER file_header;
-    BITMAPINFOHEADER info_header;
+  BITMAPFILEHEADER file_header;
+  BITMAPINFOHEADER info_header;
 
     // parsing and printing file header
     parse_headers(file, &file_header, &info_header);
-    // TODO: implement histogram
+    // check if the file is an uncompressed BMP
+  if (info_header.biCompression != 0 || info_header.biBitCount != 24) {
+    printf("This program can only handle uncompressed 24-bit BMP files.\n");
+    return 1;
+  }
+
+  // all members initialized to zeros by providing expilcit curly braces
+  int n_pixels                  = info_header.biWidth * info_header.biHeight;
+  struct bucket_BGR buckets[16] = {};
+  int buffer_size               = ((info_header.biWidth * info_header.biBitCount + 31) / 32) * 4;
+  printf("buffer_size: %d\n", buffer_size);
+
+  parse_bucket_histogram(file, buckets, n_pixels, file_header.bfOffBits, buffer_size);
+  print_bucket_histogram(buckets, n_pixels);
+  
     switch (argc)
     {
     case 2:
@@ -58,12 +73,14 @@ int main(int argc, char *argv[]) {
         fwrite(image_data, size, 1, outfile);
         free(image_data);
         encode_steg(outfile, &file_header, &info_header, argv[3]);
-        break;
-    default:
-        printf("Invalid number of arguments\n");
-        break;
-    }
+
     fclose(outfile);
     fclose(file);
     return 0;
+  default:
+    printf("Invalid number of arguments\n");
+    break;
+  }
+  fclose(file);
+  return 0;
 }
