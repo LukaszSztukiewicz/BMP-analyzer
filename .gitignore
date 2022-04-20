@@ -1,6 +1,7 @@
 # Prerequisites
 *.d
 *.bmp
+.vscode
 
 # Object files
 *.o
