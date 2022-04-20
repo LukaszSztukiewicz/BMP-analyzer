@@ -15,17 +15,18 @@ void print_bucket_histogram(struct bucket_BGR buckets[], int total_pixels) {
   int offset       = 16;
   int bucket_start = 0;
   int bucket_end   = 15;
+  printf("HISTOGRAM:\n");
 
-  printf("Blue: ");
+  printf("\t Blue: \n");
   for (int i = 0; i < offset; i++) {
-    printf("%d-%d: %.2f%%\n", bucket_start + i * offset, bucket_end + i * offset, (float)buckets[i].nBlue / total_pixels);
+    printf("\t\t%d-%d: %.2f%%\n", bucket_start + i * offset, bucket_end + i * offset, ((float)buckets[i].nBlue * 100) / total_pixels);
   }
-  printf("Green: ");
+  printf("\t Green: \n");
   for (int i = 0; i < offset; i++) {
-    printf("%d-%d: %.2f%%\n", bucket_start + i * offset, bucket_end + i * offset, (float)buckets[i].nGreen / total_pixels);
+    printf("\t\t%d-%d: %.2f%%\n", bucket_start + i * offset, bucket_end + i * offset, ((float)buckets[i].nGreen * 100) / total_pixels);
   }
-  printf("Red: ");
+  printf("\t Red: \n");
   for (int i = 0; i < offset; i++) {
-    printf("%d-%d: %.2f%%\n", bucket_start + i * offset, bucket_end + i * offset, (float)buckets[i].nRed / total_pixels);
+    printf("\t\t%d-%d: %.2f%%\n", bucket_start + i * offset, bucket_end + i * offset, ((float)buckets[i].nRed * 100) / total_pixels);
   }
 }
