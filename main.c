@@ -23,9 +23,9 @@ int main(int argc, char *argv[]) {
     }
 
     // all members initialized to zeros by providing expilcit curly braces
-    struct bucket_BGR buckets[16] = {};
-    parse_bucket_histogram(file, buckets, info_header, file_header);
-    print_bucket_histogram(buckets, info_header);
+    bucket_BGR buckets[16] = {};
+    parse_bucket_histogram(file, buckets, &info_header, &file_header);
+    print_bucket_histogram(buckets, &info_header);
 
     printf("Decode steganography? [Y/n] ");
     while (1) {

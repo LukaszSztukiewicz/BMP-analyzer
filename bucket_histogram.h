@@ -1,3 +1,6 @@
+#ifndef BUCKET_HISTOGRAM_H
+#define BUCKET_HISTOGRAM_H
+#include "bmp_header_info.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,15 +15,14 @@ typedef struct pixel_BGR {
 
 #pragma pack(push, 1)
 typedef union bucket_BGR {
-  // number of pixels in the bucket from each color
-  struct colors{
-    uint32_t nBlue;
-    uint32_t nGreen;
-    uint32_t nRed;
-  }
-  uint32_t arr[3];
+  struct colors {
+    uint32_t nBlue, nGreen, nRed;
+  } colors;
+  uint32_t color_array[3];
 } bucket_BGR;
 #pragma pack(pop)
 
-void parse_bucket_histogram(FILE *file, struct bucket_BGR buckets[], BITMAPINFOHEADER , BITMAPFILEHEADER);
-void print_bucket_histogram(struct bucket_BGR buckets[], BITMAPINFOHEADER);
+void parse_bucket_histogram(FILE *file, bucket_BGR *buckets, BITMAPINFOHEADER *info_header, BITMAPFILEHEADER *file_header);
+void print_bucket_histogram(bucket_BGR *buckets, BITMAPINFOHEADER *info_header);
+
+#endif
