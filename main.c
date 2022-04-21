@@ -1,9 +1,11 @@
 #include "bmp_header_info.h"
 #include "bucket_histogram.h"
+#include "grayscale_converter.h"
 #include "steganography.h"
 
 int main(int argc, char *argv[]) {
-  FILE *file = fopen(argv[1], "rb");
+  FILE *file    = fopen(argv[1], "rb");
+  FILE *outfile = fopen(argv[2], "wb");
 
   BITMAPFILEHEADER file_header;
   BITMAPINFOHEADER info_header;
@@ -42,21 +44,18 @@ int main(int argc, char *argv[]) {
     break;
   case 3:
     // code for grayscale conversion
-    FILE *outfile = fopen(argv[2], "wb");
     fseek(file, 0, SEEK_SET);
     fseek(outfile, 0, SEEK_SET);
     fwrite(&file_header, sizeof(BITMAPFILEHEADER), 1, outfile);
     fwrite(&info_header, sizeof(BITMAPINFOHEADER), 1, outfile);
 
-    convert_to_grayscale(file, outfile, buckets, &info_header, &file_header);
+    convert_to_grayscale(file, outfile, &info_header);
 
     fclose(outfile);
     break;
 
   case 4:
     // STEGANOGRAPHY
-    FILE *outfile = fopen(argv[2], "wb");
-
     fseek(file, 0, SEEK_SET);
     fseek(outfile, 0, SEEK_SET);
     fwrite(&file_header, sizeof(BITMAPFILEHEADER), 1, outfile);
