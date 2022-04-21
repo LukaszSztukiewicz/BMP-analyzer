@@ -3,8 +3,9 @@
 #include "grayscale_converter.h"
 #include <string.h>
 
-void convert_to_grayscale(FILE *file, FILE *outfile, BITMAPINFOHEADER *info_header) {
-
+void convert_to_grayscale(FILE *file, FILE *outfile, BITMAPINFOHEADER *info_header, BITMAPFILEHEADER *file_header) {
+  fseek(file, file_header->bfOffBits, SEEK_SET);
+  fseek(outfile, file_header->bfOffBits, SEEK_SET);
   struct pixel_BGR pixel;
   int row_size = ((info_header->biWidth * info_header->biBitCount + 31) / 32) * 4;
   printf("row_size: %d\n", row_size);
@@ -23,5 +24,6 @@ void convert_to_grayscale(FILE *file, FILE *outfile, BITMAPINFOHEADER *info_head
       fwrite(&pixel, sizeof(struct pixel_BGR), 1, outfile);
     }
     fseek(file, pad_size, SEEK_CUR);
+    fseek(outfile, pad_size, SEEK_CUR);
   }
 }

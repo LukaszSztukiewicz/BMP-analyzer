@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
     fwrite(&file_header, sizeof(BITMAPFILEHEADER), 1, outfile);
     fwrite(&info_header, sizeof(BITMAPINFOHEADER), 1, outfile);
 
-    convert_to_grayscale(file, outfile, &info_header);
+    convert_to_grayscale(file, outfile, &info_header, &file_header);
 
     fclose(outfile);
     break;
