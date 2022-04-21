@@ -11,13 +11,16 @@ typedef struct pixel_BGR {
 #pragma pack(pop)
 
 #pragma pack(push, 1)
-typedef struct bucket_BGR {
+typedef union bucket_BGR {
   // number of pixels in the bucket from each color
-  uint32_t nBlue;
-  uint32_t nGreen;
-  uint32_t nRed;
+  struct colors{
+    uint32_t nBlue;
+    uint32_t nGreen;
+    uint32_t nRed;
+  }
+  uint32_t arr[3];
 } bucket_BGR;
 #pragma pack(pop)
 
-void parse_bucket_histogram(FILE *file, struct bucket_BGR buckets[], int n_pixles, int bfOffBits, int bufferSize);
-void print_bucket_histogram(struct bucket_BGR buckets[], int n_pixles);
+void parse_bucket_histogram(FILE *file, struct bucket_BGR buckets[], BITMAPINFOHEADER , BITMAPFILEHEADER);
+void print_bucket_histogram(struct bucket_BGR buckets[], BITMAPINFOHEADER);
