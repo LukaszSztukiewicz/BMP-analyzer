@@ -3,8 +3,7 @@
 #include "steganography.h"
 
 int main(int argc, char *argv[]) {
-  FILE *file    = fopen(argv[1], "rb");
-  FILE *outfile = fopen(argv[2], "wb");
+  FILE *file = fopen(argv[1], "rb");
 
   BITMAPFILEHEADER file_header;
   BITMAPINFOHEADER info_header;
@@ -43,34 +42,45 @@ int main(int argc, char *argv[]) {
     break;
   case 3:
     // code for grayscale conversion
-    // TODO: implement grayscale conversion
-    break;
-  case 4:
-    // STEGANOGRAPHY
+    FILE *outfile = fopen(argv[2], "wb");
     fseek(file, 0, SEEK_SET);
     fseek(outfile, 0, SEEK_SET);
-    // copy the file header
     fwrite(&file_header, sizeof(BITMAPFILEHEADER), 1, outfile);
-    // copy the info header
     fwrite(&info_header, sizeof(BITMAPINFOHEADER), 1, outfile);
-    // copy the image data
+
+    convert_to_grayscale(file, outfile, buckets, &info_header, &file_header);
+
+    fclose(outfile);
+    break;
+
+  case 4:
+    // STEGANOGRAPHY
+    FILE *outfile = fopen(argv[2], "wb");
+
+    fseek(file, 0, SEEK_SET);
+    fseek(outfile, 0, SEEK_SET);
+    fwrite(&file_header, sizeof(BITMAPFILEHEADER), 1, outfile);
+    fwrite(&info_header, sizeof(BITMAPINFOHEADER), 1, outfile);
     int size                  = info_header.biSizeImage;
     unsigned char *image_data = malloc(size);
+
     // handle allocation error
     if (image_data == NULL) {
       printf("Error: malloc failed.\n");
       return 1;
     }
+
     fseek(file, file_header.bfOffBits, SEEK_SET);
     fseek(outfile, file_header.bfOffBits, SEEK_SET);
     fread(image_data, size, 1, file);
     fwrite(image_data, size, 1, outfile);
     free(image_data);
+
     encode_steg(outfile, &file_header, &info_header, argv[3]);
 
     fclose(outfile);
-    fclose(file);
-    return 0;
+    break;
+
   default:
     printf("Invalid number of arguments\n");
     break;
