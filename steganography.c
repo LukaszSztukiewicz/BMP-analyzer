@@ -10,7 +10,7 @@ unsigned char get_steg_char(FILE *file){
 
 void write_steg_char(FILE *file, unsigned char message_length_dec){
     for (int i = 7; i >= 0; i--){
-        fputc((message_length_dec >> i) & 1, file);
+        fputc(((message_length_dec >> i) & 1) | 0xFE, file);
     }
 }
 
