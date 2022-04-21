@@ -6,13 +6,11 @@
 void convert_to_grayscale(FILE *file, FILE *outfile, BITMAPINFOHEADER *info_header, BITMAPFILEHEADER *file_header) {
   fseek(file, file_header->bfOffBits, SEEK_SET);
   fseek(outfile, file_header->bfOffBits, SEEK_SET);
+
   struct pixel_BGR pixel;
-  int row_size = ((info_header->biWidth * info_header->biBitCount + 31) / 32) * 4;
-  printf("row_size: %d\n", row_size);
+  int row_size        = ((info_header->biWidth * info_header->biBitCount + 31) / 32) * 4;
   int n_pixels_in_row = (row_size / sizeof(struct pixel_BGR));
-  printf("n_pixels_in_row: %d\n", n_pixels_in_row);
-  int pad_size = row_size - (n_pixels_in_row * sizeof(struct pixel_BGR));
-  printf("pad_size: %d\n", pad_size);
+  int pad_size        = row_size - (n_pixels_in_row * sizeof(struct pixel_BGR));
 
   for (LONG i = 0; i < info_header->biHeight; i++) {
     for (LONG j = 0; j < n_pixels_in_row; j++) {

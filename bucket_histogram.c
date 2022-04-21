@@ -4,9 +4,11 @@
 
 void parse_bucket_histogram(FILE *file, bucket_BGR *buckets, BITMAPINFOHEADER *info_header, BITMAPFILEHEADER *file_header) {
   fseek(file, file_header->bfOffBits, SEEK_SET);
+
   struct pixel_BGR pixel;
   int row_size        = ((info_header->biWidth * info_header->biBitCount + 31) / 32) * 4;
   int n_pixels_in_row = (row_size / sizeof(struct pixel_BGR));
+  int pad_size        = row_size - (n_pixels_in_row * sizeof(struct pixel_BGR));
 
   for (LONG i = 0; i < info_header->biHeight; i++) {
     for (LONG j = 0; j < n_pixels_in_row; j++) {
@@ -15,7 +17,7 @@ void parse_bucket_histogram(FILE *file, bucket_BGR *buckets, BITMAPINFOHEADER *i
       buckets[pixel.green / 16].colors.nGreen++;
       buckets[pixel.red / 16].colors.nRed++;
     }
-    fseek(file, row_size - n_pixels_in_row * sizeof(struct pixel_BGR), SEEK_CUR);
+    fseek(file, pad_size, SEEK_CUR);
   }
 }
 

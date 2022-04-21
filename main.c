@@ -42,6 +42,7 @@ int main(int argc, char *argv[]) {
       }
     }
     break;
+
   case 3:
     // code for grayscale conversion
     fseek(file, 0, SEEK_SET);
