@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
       char c = getchar();
       getchar();
       if (c == 'Y') {
-        decode_steg(file, &file_header, &info_header);
+        decode_steg(file, &file_header);
         break;
       } else if (c == 'n') {
         break;
@@ -61,23 +61,12 @@ int main(int argc, char *argv[]) {
     fseek(outfile, 0, SEEK_SET);
     fwrite(&file_header, sizeof(BITMAPFILEHEADER), 1, outfile);
     fwrite(&info_header, sizeof(BITMAPINFOHEADER), 1, outfile);
-    int size                  = info_header.biSizeImage;
-    unsigned char *image_data = malloc(size);
+    encode_steg(file, outfile, &file_header, argv[3]);
 
-    // handle allocation error
-    if (image_data == NULL) {
-      printf("Error: malloc failed.\n");
-      return 1;
+    char buffer[1024];
+    while (fread(buffer, sizeof(char), 1024, file) > 0) {
+      fwrite(buffer, sizeof(char), 1024, outfile);
     }
-
-    fseek(file, file_header.bfOffBits, SEEK_SET);
-    fseek(outfile, file_header.bfOffBits, SEEK_SET);
-    fread(image_data, size, 1, file);
-    fwrite(image_data, size, 1, outfile);
-    free(image_data);
-
-    encode_steg(outfile, &file_header, &info_header, argv[3]);
-
     fclose(outfile);
     break;
 

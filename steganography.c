@@ -8,13 +8,14 @@ unsigned char get_steg_char(FILE *file){
     return message_length_dec;
 }
 
-void write_steg_char(FILE *file, unsigned char message_length_dec){
+void write_steg_char(FILE *file, FILE *outfile, unsigned char message){
     for (int i = 7; i >= 0; i--){
-        fputc(((message_length_dec >> i) & 1) | 0xFE, file);
+        unsigned char curr_byte = fgetc(file);
+        fputc((curr_byte & 0xFE) | ((message >> i) & 1), outfile);
     }
 }
 
-void decode_steg(FILE *file, BITMAPFILEHEADER *file_header, BITMAPINFOHEADER *info_header){
+void decode_steg(FILE *file, BITMAPFILEHEADER *file_header){
     fseek(file, file_header->bfOffBits, SEEK_SET);
     unsigned char length = get_steg_char(file);
     char *message = malloc(length + 1);
@@ -30,16 +31,13 @@ void decode_steg(FILE *file, BITMAPFILEHEADER *file_header, BITMAPINFOHEADER *in
     free(message);
 }
 
-void encode_steg(FILE *file, BITMAPFILEHEADER *file_header, BITMAPINFOHEADER *info_header, char *message){
+void encode_steg(FILE *file, FILE *outfile, BITMAPFILEHEADER *file_header, char *message){
     fseek(file, file_header->bfOffBits, SEEK_SET);
+    fseek(outfile, file_header->bfOffBits, SEEK_SET);
     unsigned char length = strlen(message);
-    if (length > 255){
-        printf("Error: message too long.\n");
-        return;
-    }
-    write_steg_char(file, length);
+    write_steg_char(file, outfile, length);
     for (int i = 0; i < length; i++){
-        write_steg_char(file, message[i]);
+        write_steg_char(file, outfile,  message[i]);
     }
     printf("Message encoded.\n");
 }
