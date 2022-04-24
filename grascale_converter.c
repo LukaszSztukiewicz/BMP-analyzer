@@ -21,7 +21,7 @@ void convert_to_grayscale(FILE *file, FILE *outfile, BITMAPINFOHEADER *info_head
       pixel.red    = gray;
       fwrite(&pixel, sizeof(struct pixel_BGR), 1, outfile);
     }
-    fseek(file, pad_size, SEEK_CUR);
-    fseek(outfile, pad_size, SEEK_CUR);
+    fread(&pixel, pad_size, 1, file);
+    fwrite(&pixel, pad_size, 1, outfile);
   }
 }
